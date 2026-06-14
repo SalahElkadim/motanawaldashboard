@@ -55,9 +55,12 @@ axiosInstance.interceptors.response.use(
           return Promise.reject(error);
         }
 
-        const { data } = await axios.post(`${BASE_URL}/auth/token/refresh/`, {
-          refresh: refreshToken,
-        });
+        const { data } = await axios.post(
+          `${
+            process.env.REACT_APP_API_URL || "http://localhost:8000"
+          }/api/token/refresh/`,
+          { refresh: refreshToken }
+        );
         updateAccessToken(data.access);
         original.headers.Authorization = `Bearer ${data.access}`;
         return axiosInstance(original);
